@@ -57,7 +57,7 @@ func ImageImgToBase64(image image.Image) string {
 
 //ImageFileToBase64
 func ImageFileToBase64(filename string) string {
-	ff, _ := ioutil.ReadFile(filename)               //我还是喜欢用这个快速读文件
+	ff, _ := ioutil.ReadFile(filename)               //快速读文件
 	bufstore := make([]byte, 50000)                       //数据缓存
 	base64.StdEncoding.Encode(bufstore, ff)               // 文件转base64
 	return string(bufstore)
