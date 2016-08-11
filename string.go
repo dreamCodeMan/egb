@@ -132,6 +132,17 @@ func StringSHA256Hex(data string) string {
 	return fmt.Sprintf("%s", hex.EncodeToString(hash.Sum(nil)))
 }
 
+//StringBase64Encode returns the base64 encoding of data.
+func StringBase64Encode(data string) string {
+	return base64.StdEncoding.EncodeToString([]byte(data))
+}
+
+//StringBase64Decode returns the string represented by the base64 string data.
+func StringBase64Decode(data string) (string, error) {
+	b, err := base64.StdEncoding.DecodeString(data)
+	return string(b), err
+}
+
 //StringAddURLParam add url param for given url.
 func StringAddURLParam(url, name, value string) string {
 	var separator string
