@@ -133,11 +133,13 @@ func StringSHA256Hex(data string) string {
 }
 
 //StringBase64Encode returns the base64 encoding of data.
+//TODO test func
 func StringBase64Encode(data string) string {
 	return base64.StdEncoding.EncodeToString([]byte(data))
 }
 
 //StringBase64Decode returns the string represented by the base64 string data.
+//TODO test func
 func StringBase64Decode(data string) (string, error) {
 	b, err := base64.StdEncoding.DecodeString(data)
 	return string(b), err

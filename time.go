@@ -44,6 +44,13 @@ func TimeFromUnix(unix string) string {
 	return str_time
 }
 
+//TimeFromUnixNano return normal format time from unix nano time string.
+func TimeFromUnixNano(unix string) string {
+	i, _ := strconv.ParseInt(unix, 10, 64)
+	str_time := time.Unix(0, i).Format("2006-01-02 15:04:05")
+	return str_time
+}
+
 //TimeNowDate return now date time string.
 //eg:2016-08-05 15:04:05
 func TimeNowDate() string {
@@ -59,6 +66,11 @@ func TimeNowDateDay() string {
 //TimeNowUnix return now unix time string.
 func TimeNowUnix() string {
 	return strconv.FormatInt(time.Now().Unix(), 10)
+}
+
+//TimeNowUnixNano return now unix nano time string.
+func TimeNowUnixNano() string {
+	return strconv.FormatInt(time.Now().UnixNano(), 10)
 }
 
 //TimeDayToUnix return unix time string by given format-time.
