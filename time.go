@@ -68,7 +68,13 @@ func TimeNowUnix() string {
 	return strconv.FormatInt(time.Now().Unix(), 10)
 }
 
+//TimeNowUnixMs return now unix ms time string.
+func TimeNowUnixMs() string {
+	return StringSubStr(TimeNowUnixNano(), 0, 13)
+}
+
 //TimeNowUnixNano return now unix nano time string.
+//eg:1471226178 882 997 341
 func TimeNowUnixNano() string {
 	return strconv.FormatInt(time.Now().UnixNano(), 10)
 }
