@@ -182,8 +182,3 @@ func Test_StringToIntArray(t *testing.T) {
 		t.Errorf("StringToIntArray:\n Expect => %#v\n Got => %#v\n", correct, result)
 	}
 }
-
-
-
-
-

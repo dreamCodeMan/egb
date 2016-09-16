@@ -1,41 +1,41 @@
 package egb
 
 import (
+	"errors"
+	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"strings"
-	"io"
-	"fmt"
 )
 
 /**
-	文件上传类
-	面向对象的写法
-	example:
-	rootpath := "文件的存储路径"
-	upload := NewUpload(rootpath)
-	uploadinfo := upload.UploadFile(this.Ctx.Request, name)
- */
+文件上传类
+面向对象的写法
+example:
+rootpath := "文件的存储路径"("./static/xx/xx/xx")
+upload := NewUpload(rootpath)
+uploadinfo := upload.UploadFile(this.Ctx.Request, name)
+*/
 
 //上传需要初始化的对象
 type upload struct {
 	Rootpath string //上传文件后存储文件的目录
 }
 
-//执行上传后返回的信息
+//UploadReturnInfo 执行上传后返回的信息
 type UploadReturnInfo struct {
-	Issuc    bool   //是否成功
-	Failinfo string //如果失败,失败的原因
-	Url      string //文件地址 rootpath + filename + ext
-	Filename string //文件名
-	Ext      string //文件后缀
+	Err      error  //错误，如果存在，则上传失败
+	URL      string //文件地址 rootpath + filename + ext(直接用于显示用,即直接存储在数据库中的)
+	Filename string //文件名 filename
+	Ext      string //文件后缀 ext
 }
 
 var (
 	allowSize = 1024 //1G
 )
 
-//构造方法
+//NewUpload 构造方法
 //必须使用这个方法初始化一个Upload对象
 func NewUpload(rootpath string) *upload {
 	upload := new(upload)
@@ -45,32 +45,31 @@ func NewUpload(rootpath string) *upload {
 
 /*
 	检验大小
- */
+*/
 func checkSize(size int64) bool {
-	if size / (1024 * 1024) > int64(allowSize) {
+	if size/(1024*1024) > int64(allowSize) {
 		return false
-	}else {
-		return true
 	}
+	return true
 }
 
-//获取文件大小
+//Sizer 获取文件大小
 type Sizer interface {
 	Size() int64
 }
 
-// 获取文件信息的接口
+//Stat 获取文件信息的接口
 type Stat interface {
 	Stat() (os.FileInfo, error)
 }
 
+//UploadFile 上传文件
 func (u *upload) UploadFile(request *http.Request, name string) UploadReturnInfo {
 	file, handle, err := request.FormFile(name)
 	defer file.Close()
 	if err != nil {
 		return UploadReturnInfo{
-			Issuc:false,
-			Failinfo:err.Error(),
+			Err: err,
 		}
 	}
 	//获取文件名
@@ -81,22 +80,19 @@ func (u *upload) UploadFile(request *http.Request, name string) UploadReturnInfo
 	if sizeInterface, ok := file.(Sizer); ok {
 		if !checkSize(sizeInterface.Size()) {
 			return UploadReturnInfo{
-				Issuc:false,
-				Failinfo:"文件大小太大,超过限制",
+				Err: errors.New("文件大小太大,超过限制"),
 			}
 		}
-	}else if statInterface, ok := file.(Stat); ok {
+	} else if statInterface, ok := file.(Stat); ok {
 		fileInfo, _ := statInterface.Stat()
 		if !checkSize(fileInfo.Size()) {
 			return UploadReturnInfo{
-				Issuc:false,
-				Failinfo:"文件大小太大,超过限制",
+				Err: errors.New("文件大小太大,超过限制"),
 			}
 		}
-	}else {
+	} else {
 		return UploadReturnInfo{
-			Issuc:false,
-			Failinfo:"无法获取上传文件大小",
+			Err: errors.New("无法获取上传文件大小"),
 		}
 	}
 	//获取文件名后缀
@@ -104,37 +100,32 @@ func (u *upload) UploadFile(request *http.Request, name string) UploadReturnInfo
 	fileExt = strings.ToLower(fileExt)
 	//使用MD5值作为新的文件名
 	/*
-	md5h := md5.New()
-	_, _ = io.Copy(md5h, inputfile)
-	outputFileName = fmt.Sprintf("%x", md5h.Sum(nil))
+		md5h := md5.New()
+		_, _ = io.Copy(md5h, inputfile)
+		outputFileName = fmt.Sprintf("%x", md5h.Sum(nil))
 	*/
 	//向文件名后面加上时间戳 保证唯一
 	outputFileName = outputFileName + TimeNowUnix()
 	//首先创建目录
-	os.MkdirAll(StringSubStr(u.Rootpath, 2, len(u.Rootpath) - 2), os.ModePerm)
+	os.MkdirAll(StringSubStr(u.Rootpath, 2, len(u.Rootpath)-2), os.ModePerm)
 	//拷贝到新文件
-	outputfile, err := os.OpenFile(u.Rootpath + outputFileName + "." + fileExt, os.O_WRONLY | os.O_CREATE, 0666)
+	outputfile, err := os.OpenFile(u.Rootpath+outputFileName+"."+fileExt, os.O_WRONLY|os.O_CREATE, 0666)
 	defer outputfile.Close()
 	if err != nil {
 		return UploadReturnInfo{
-			Issuc:false,
-			Failinfo:err.Error(),
+			Err: err,
 		}
 	}
 	_, copyerr := io.Copy(outputfile, file)
-	if err != nil {
+	if copyerr != nil {
 		return UploadReturnInfo{
-			Issuc:false,
-			Failinfo:copyerr.Error(),
+			Err: err,
 		}
 	}
 	return UploadReturnInfo{
-		Issuc:true,
-		Url:u.Rootpath + fmt.Sprintf("%s.%s", outputFileName, fileExt),
-		Filename:outputFileName,
-		Ext:fileExt,
+		Err:      nil,
+		URL:      u.Rootpath + fmt.Sprintf("%s.%s", outputFileName, fileExt),
+		Filename: outputFileName,
+		Ext:      fileExt,
 	}
 }
-
-
-
