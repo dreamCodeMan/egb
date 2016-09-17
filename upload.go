@@ -26,7 +26,7 @@ type upload struct {
 //UploadReturnInfo 执行上传后返回的信息
 type UploadReturnInfo struct {
 	Err      error  //错误，如果存在，则上传失败
-	URL      string //文件地址 rootpath + filename + ext(直接用于显示用,即直接存储在数据库中的)
+	URL      string //文件地址 rootpath-1(/static/xx/xx/xx) + filename + ext(直接用于显示用,即直接存储在数据库中的)
 	Filename string //文件名 filename
 	Ext      string //文件后缀 ext
 }
@@ -124,7 +124,7 @@ func (u *upload) UploadFile(request *http.Request, name string) UploadReturnInfo
 	}
 	return UploadReturnInfo{
 		Err:      nil,
-		URL:      u.Rootpath + fmt.Sprintf("%s.%s", outputFileName, fileExt),
+		URL:      StringSubStr(u.Rootpath, 1, len(u.Rootpath)-1) + fmt.Sprintf("%s.%s", outputFileName, fileExt),
 		Filename: outputFileName,
 		Ext:      fileExt,
 	}
