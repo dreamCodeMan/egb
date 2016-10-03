@@ -1,14 +1,14 @@
 package egb
 
 import (
-	"time"
-	"strings"
-	"net/http"
 	"fmt"
-	"io/ioutil"
 	"io"
+	"io/ioutil"
+	"net/http"
 	"os"
 	"path"
+	"strings"
+	"time"
 )
 
 //FileBufferedReader return io.Reader or error by  the given file url.
@@ -51,7 +51,7 @@ func FileSetBytes(filename string, data []byte) error {
 
 //FileAppendBytes append bytes to the given file.
 func FileAppendBytes(filename string, data []byte) error {
-	file, err := os.OpenFile(filename, os.O_WRONLY | os.O_APPEND | os.O_CREATE, 0660)
+	file, err := os.OpenFile(filename, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0660)
 	if err != nil {
 		return err
 	}
@@ -137,7 +137,7 @@ func FileGetPrefix(filename string) string {
 func FileGetExt(filename string) string {
 	for i := len(filename) - 1; i >= 0; i-- {
 		if filename[i] == '.' {
-			return filename[i + 1:]
+			return filename[i+1:]
 		}
 	}
 	return ""
@@ -261,6 +261,3 @@ type FileCopyError struct {
 func (e *FileCopyError) Error() string {
 	return e.What
 }
-
-
-
