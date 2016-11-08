@@ -15,7 +15,7 @@ import (
 example:
 rootpath := "文件的存储路径"("./static/xx/xx/xx")
 upload := NewUpload(rootpath)
-uploadinfo := upload.UploadFile(this.Ctx.Request, name)
+uploadinfo := upload.UploadFile(this.Ctx.Request, name,md5)
 */
 
 //上传需要初始化的对象
@@ -47,7 +47,7 @@ func NewUpload(rootpath string) *upload {
 	检验大小
 */
 func checkSize(size int64) bool {
-	if size/(1024*1024) > int64(allowSize) {
+	if size / (1024 * 1024) > int64(allowSize) {
 		return false
 	}
 	return true
@@ -64,7 +64,8 @@ type Stat interface {
 }
 
 //UploadFile 上传文件
-func (u *upload) UploadFile(request *http.Request, name string) UploadReturnInfo {
+//md5 文件名是否MD5加密
+func (u *upload) UploadFile(request *http.Request, name string, md5 bool) UploadReturnInfo {
 	file, handle, err := request.FormFile(name)
 	defer file.Close()
 	if err != nil {
@@ -98,18 +99,18 @@ func (u *upload) UploadFile(request *http.Request, name string) UploadReturnInfo
 	//获取文件名后缀
 	fileExt := FileGetExt(filename)
 	fileExt = strings.ToLower(fileExt)
+	//去除文件名中的空格
+	outputFileName = strings.Replace(outputFileName, " ", "", -1)
 	//使用MD5值作为新的文件名
-	/*
-		md5h := md5.New()
-		_, _ = io.Copy(md5h, inputfile)
-		outputFileName = fmt.Sprintf("%x", md5h.Sum(nil))
-	*/
+	if md5 {
+		outputFileName = StringMD5Hex(outputFileName)
+	}
 	//向文件名后面加上时间戳 保证唯一
 	outputFileName = outputFileName + TimeNowUnix()
 	//首先创建目录
-	os.MkdirAll(StringSubStr(u.Rootpath, 2, len(u.Rootpath)-2), os.ModePerm)
+	os.MkdirAll(StringSubStr(u.Rootpath, 2, len(u.Rootpath) - 2), os.ModePerm)
 	//拷贝到新文件
-	outputfile, err := os.OpenFile(u.Rootpath+outputFileName+"."+fileExt, os.O_WRONLY|os.O_CREATE, 0666)
+	outputfile, err := os.OpenFile(u.Rootpath + outputFileName + "." + fileExt, os.O_WRONLY | os.O_CREATE, 0666)
 	defer outputfile.Close()
 	if err != nil {
 		return UploadReturnInfo{
@@ -124,8 +125,10 @@ func (u *upload) UploadFile(request *http.Request, name string) UploadReturnInfo
 	}
 	return UploadReturnInfo{
 		Err:      nil,
-		URL:      StringSubStr(u.Rootpath, 1, len(u.Rootpath)-1) + fmt.Sprintf("%s.%s", outputFileName, fileExt),
+		URL:      StringSubStr(u.Rootpath, 1, len(u.Rootpath) - 1) + fmt.Sprintf("%s.%s", outputFileName, fileExt),
 		Filename: outputFileName,
 		Ext:      fileExt,
 	}
 }
+
+

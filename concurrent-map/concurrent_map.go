@@ -1,3 +1,6 @@
+/*
+	仿照:https://github.com/orcaman/concurrent-map的思路
+ */
 package concurrent_map
 
 import "sync"
