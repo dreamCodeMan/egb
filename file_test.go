@@ -99,4 +99,23 @@ func Test_FileGetExt(t *testing.T) {
 }
 
 func Test_ListDir(t *testing.T) {
+	path := "./testdata"
+	strs, err := ListDir(path)
+	if err != nil {
+		t.Fail()
+	}
+	if len(strs) != 4{
+		t.Fail()
+	}
+}
+
+func TestListDirFiles(t *testing.T) {
+	path := "./testdata"
+	strs, err := ListDirFiles(path)
+	if err != nil {
+		t.Fail()
+	}
+	if len(strs) != 4{
+		t.Fail()
+	}
 }

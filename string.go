@@ -16,6 +16,7 @@ import (
 	"crypto/cipher"
 	"crypto/rand"
 	"errors"
+	"regexp"
 )
 
 //StringMapFunc execute a function on each element of the slice of string.
@@ -82,7 +83,13 @@ func StringStripHTMLTags(text string) (plainText string) {
 		return text
 	}
 	buf.WriteString(text[tagClose + 1:])
-	return buf.String()
+	str := buf.String()
+	re, _ := regexp.Compile("\\<[\\S\\s]+?\\>")
+	str = re.ReplaceAllStringFunc(str, strings.ToLower)
+	//替换掉注释和一些标签
+	reg := regexp.MustCompile(`<!--[^>]+>|<iframe[\S\s]+?</iframe>|<a[^>]+>|</a>|<script[\S\s]+?</script>|<style[\S\s]+?</style>|<div class="hzh_botleft">[\S\s]+?</div>`)
+	str = reg.ReplaceAllString(str, "")
+	return str
 }
 
 // StringReplaceHTMLTags replaces HTML/XML tags from text with replacement.
