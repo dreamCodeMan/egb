@@ -118,7 +118,6 @@ func (c *config) ReadList() []map[string]map[string]string {
 				c.conflist = append(c.conflist, data)
 			}
 		}
-
 	}
 	return c.conflist
 }

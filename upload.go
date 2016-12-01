@@ -67,12 +67,12 @@ type Stat interface {
 //md5 文件名是否MD5加密
 func (u *upload) UploadFile(request *http.Request, name string, md5 bool) UploadReturnInfo {
 	file, handle, err := request.FormFile(name)
-	defer file.Close()
 	if err != nil {
 		return UploadReturnInfo{
 			Err: err,
 		}
 	}
+	defer file.Close()
 	//获取文件名
 	filename := handle.Filename
 	inputfileprefix := FileGetPrefix(filename)
