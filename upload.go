@@ -111,12 +111,12 @@ func (u *upload) UploadFile(request *http.Request, name string, md5 bool) Upload
 	os.MkdirAll(StringSubStr(u.Rootpath, 2, len(u.Rootpath) - 2), os.ModePerm)
 	//拷贝到新文件
 	outputfile, err := os.OpenFile(u.Rootpath + outputFileName + "." + fileExt, os.O_WRONLY | os.O_CREATE, 0666)
-	defer outputfile.Close()
 	if err != nil {
 		return UploadReturnInfo{
 			Err: err,
 		}
 	}
+	defer outputfile.Close()
 	_, copyerr := io.Copy(outputfile, file)
 	if copyerr != nil {
 		return UploadReturnInfo{
