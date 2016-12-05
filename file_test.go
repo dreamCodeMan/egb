@@ -99,12 +99,12 @@ func Test_FileGetExt(t *testing.T) {
 }
 
 func Test_ListDir(t *testing.T) {
-	path := "./testdata"
+	path := "./concurrent-map"
 	strs, err := ListDir(path)
 	if err != nil {
 		t.Fail()
 	}
-	if len(strs) != 4{
+	if len(strs) != 2{
 		t.Fail()
 	}
 }
