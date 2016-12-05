@@ -6,9 +6,9 @@ package egb
 import "testing"
 
 const (
-	inputImagePath = "/Users/angelina-zf/Playground/golib/src/github.com/agelinazf/egb/testdata/image/1.jpg"
-	outputResizeImagePath = "/Users/angelina-zf/Playground/golib/src/github.com/agelinazf/egb/testdata/image/1_resize.jpg"
-	outputThumbImagePath = "/Users/angelina-zf/Playground/golib/src/github.com/agelinazf/egb/testdata/image/1_thumb.jpg"
+	inputImagePath = "./testdata/image/1.jpg"
+	outputResizeImagePath = "./testdata/image/1_resize.jpg"
+	outputThumbImagePath = "./testdata/image/1_thumb.jpg"
 )
 
 func TestResizeImage(t *testing.T) {
