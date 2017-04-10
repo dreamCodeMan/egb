@@ -4,7 +4,7 @@ import "regexp"
 
 //RegexpIsPhoneNumber return true if given string is a phone number.
 func RegexpIsPhoneNumber(mobileNum string) bool {
-	regular := "^(13[0-9]|14[57]|15[0-35-9]|18[07-9])\\d{8}$"
+	regular := "^(13[0-9]|14[0-9]|15[0-9]|17[0-9]|18[0-9])\\d{8}$"
 	reg := regexp.MustCompile(regular)
 	return reg.MatchString(mobileNum)
 }
@@ -25,7 +25,7 @@ func RegexpIsStrongPassword(pwd string) bool {
 
 //RegexpIsUrl return true if the given string is a true url.
 func RegexpIsUrl(url string) bool {
-	regular := `^(http://|https://)?((?:[A-Za-z0-9]+-[A-Za-z0-9]+|[A-Za-z0-9]+)\.)+([A-Za-z]+)[/\?\:]?.*$`;
+	regular := `^(http://|https://)?((?:[A-Za-z0-9]+-[A-Za-z0-9]+|[A-Za-z0-9]+)\.)+([A-Za-z]+)[/\?\:]?.*$`
 	reg := regexp.MustCompile(regular)
 	return reg.MatchString(url)
 }

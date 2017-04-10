@@ -40,7 +40,7 @@ func Test_FileAppendString(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	if str != randstr1 + randstr2 {
+	if str != randstr1+randstr2 {
 		t.Fail()
 	}
 }
@@ -104,7 +104,7 @@ func Test_ListDir(t *testing.T) {
 	if err != nil {
 		t.Fail()
 	}
-	if len(strs) != 2{
+	if len(strs) != 2 {
 		t.Fail()
 	}
 }
@@ -115,7 +115,7 @@ func TestListDirFiles(t *testing.T) {
 	if err != nil {
 		t.Fail()
 	}
-	if len(strs) != 4{
+	if len(strs) != 4 {
 		t.Fail()
 	}
 }

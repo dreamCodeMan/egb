@@ -33,7 +33,7 @@ func SliceCompareStrIgnoreOrder(s1, s2 []string) bool {
 	for i := range s1 {
 		for j := len(s2) - 1; j >= 0; j-- {
 			if s1[i] == s2[j] {
-				s2 = append(s2[:j], s2[j + 1:]...)
+				s2 = append(s2[:j], s2[j+1:]...)
 				break
 			}
 		}
@@ -67,7 +67,7 @@ func SliceCompareIntIgnoreOrder(s1, s2 []int) bool {
 	for i := range s1 {
 		for j := len(s2) - 1; j >= 0; j-- {
 			if s1[i] == s2[j] {
-				s2 = append(s2[:j], s2[j + 1:]...)
+				s2 = append(s2[:j], s2[j+1:]...)
 				break
 			}
 		}
@@ -77,10 +77,3 @@ func SliceCompareIntIgnoreOrder(s1, s2 []int) bool {
 	}
 	return true
 }
-
-
-
-
-
-
-

@@ -1,10 +1,10 @@
 package egb
 
 import (
-	"io"
 	"bytes"
-	"strings"
 	"fmt"
+	"io"
+	"strings"
 )
 
 //BytesReader convert interface{} to io.Reader

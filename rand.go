@@ -13,7 +13,7 @@ const UpperAlphaSeed = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 //RandString return the rand string by given length.
 func RandString(length int) string {
-	var bytes = make([]byte, 2 * length)
+	var bytes = make([]byte, 2*length)
 	var outBytes = make([]byte, length)
 	_, err := cryptoRand.Read(bytes)
 	if err != nil {
@@ -21,14 +21,14 @@ func RandString(length int) string {
 	}
 	mapLen := len(Seed)
 	for i := 0; i < length; i++ {
-		outBytes[i] = Seed[(int(bytes[2 * i]) * 256 + int(bytes[2 * i + 1])) % (mapLen)]
+		outBytes[i] = Seed[(int(bytes[2*i])*256+int(bytes[2*i+1]))%(mapLen)]
 	}
 	return string(outBytes)
 }
 
 //RandNum return the rand num string by given length.
 func RandNum(length int) string {
-	var bytes = make([]byte, 2 * length)
+	var bytes = make([]byte, 2*length)
 	var outBytes = make([]byte, length)
 	_, err := cryptoRand.Read(bytes)
 	if err != nil {
@@ -36,7 +36,7 @@ func RandNum(length int) string {
 	}
 	mapLen := len(NumSeed)
 	for i := 0; i < length; i++ {
-		outBytes[i] = NumSeed[(int(bytes[2 * i]) * 256 + int(bytes[2 * i + 1])) % (mapLen)]
+		outBytes[i] = NumSeed[(int(bytes[2*i])*256+int(bytes[2*i+1]))%(mapLen)]
 	}
 	return string(outBytes)
 }
@@ -47,7 +47,7 @@ func RandIntBetween(min, max int) int {
 		return max
 	}
 	mathRand.Seed(time.Now().UnixNano())
-	return mathRand.Intn(max - min) + min
+	return mathRand.Intn(max-min) + min
 }
 
 //RandIntBetween return	random int64 between two given int.
@@ -56,13 +56,13 @@ func RandInt64Between(min, max int64) int64 {
 		return max
 	}
 	mathRand.Seed(time.Now().UnixNano())
-	return mathRand.Int63n(max - min) + min
+	return mathRand.Int63n(max-min) + min
 }
 
 //RandNumber return	no-repeat number by given start end and count[min,max).
 func RandNumber(start int, end int, count int) []int {
 	//范围检查
-	if end < start || (end - start) < count {
+	if end < start || (end-start) < count {
 		return nil
 	}
 	//存放结果的slice
@@ -86,4 +86,3 @@ func RandNumber(start int, end int, count int) []int {
 	}
 	return nums
 }
-

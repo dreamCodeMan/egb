@@ -6,9 +6,9 @@ package egb
 import "testing"
 
 const (
-	inputImagePath = "./testdata/image/1.jpg"
+	inputImagePath        = "./testdata/image/1.jpg"
 	outputResizeImagePath = "./testdata/image/1_resize.jpg"
-	outputThumbImagePath = "./testdata/image/1_thumb.jpg"
+	outputThumbImagePath  = "./testdata/image/1_thumb.jpg"
 )
 
 func TestResizeImage(t *testing.T) {

@@ -44,5 +44,3 @@ func TestDeleteValue(t *testing.T) {
 		t.Errorf("GetValue\n Expect => %s\n Got => %s\n", "", name)
 	}
 }
-
-

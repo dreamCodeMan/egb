@@ -2,8 +2,8 @@ package egb
 
 import (
 	"fmt"
-	"time"
 	"strconv"
+	"time"
 )
 
 //TimeYear return now year string.
@@ -83,7 +83,7 @@ func TimeNowUnixNano() string {
 //input:2016-08-05 output:1470355200
 func TimeDayToUnix(daytime string) string {
 	timeLayout := "2006-01-02"
-	loc, _ := time.LoadLocation("Local")                            //重要：获取时区
+	loc, _ := time.LoadLocation("Local")                         //重要：获取时区
 	theTime, _ := time.ParseInLocation(timeLayout, daytime, loc) //使用模板在对应时区转化为time.time类型
 	unix := theTime.Unix()
 	return strconv.FormatInt(unix, 10)
@@ -93,9 +93,8 @@ func TimeDayToUnix(daytime string) string {
 //input:2016/8/5 15:04:02 output:1470380642
 func TimeSecondToUnix(stime string) string {
 	timeLayout := "2006-01-02 15:04:05"
-	loc, _ := time.LoadLocation("Local")                            //重要：获取时区
+	loc, _ := time.LoadLocation("Local")                       //重要：获取时区
 	theTime, _ := time.ParseInLocation(timeLayout, stime, loc) //使用模板在对应时区转化为time.time类型
 	unix := theTime.Unix()
 	return strconv.FormatInt(unix, 10)
 }
-

@@ -1,6 +1,6 @@
 /*
 	仿照:https://github.com/orcaman/concurrent-map的思路
- */
+*/
 package concurrent_map
 
 import "sync"
@@ -30,8 +30,8 @@ func New() ConcurrentMap {
 }
 
 //GetShard 通过对key值进行hash散列,对散列值进行取余操作,从而获取一个小的分片
-func (m ConcurrentMap)GetShard(key string) *ConcurrentMapShared {
-	return m[uint(fnv32(key)) % uint(SHARD_COUNT)]
+func (m ConcurrentMap) GetShard(key string) *ConcurrentMapShared {
+	return m[uint(fnv32(key))%uint(SHARD_COUNT)]
 }
 
 //Set 给map设置单个键值对
@@ -77,7 +77,7 @@ func (m ConcurrentMap) Get(key string) (interface{}, bool) {
 func (m ConcurrentMap) Count() int {
 	count := 0
 	for i := 0; i < SHARD_COUNT; i++ {
-		shard := m[i];
+		shard := m[i]
 		shard.RLock()
 		count += len(shard.items)
 		shard.RUnlock()
@@ -156,7 +156,3 @@ func fnv32(key string) uint32 {
 	}
 	return hash
 }
-
-
-
-

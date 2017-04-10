@@ -1,8 +1,8 @@
 package concurrent_map
 
 import (
-	"testing"
 	"strconv"
+	"testing"
 )
 
 func TestNew(t *testing.T) {

@@ -47,7 +47,7 @@ func NewUpload(rootpath string) *upload {
 	检验大小
 */
 func checkSize(size int64) bool {
-	if size / (1024 * 1024) > int64(allowSize) {
+	if size/(1024*1024) > int64(allowSize) {
 		return false
 	}
 	return true
@@ -108,9 +108,9 @@ func (u *upload) UploadFile(request *http.Request, name string, md5 bool) Upload
 	//向文件名后面加上时间戳 保证唯一
 	outputFileName = outputFileName + TimeNowUnix()
 	//首先创建目录
-	os.MkdirAll(StringSubStr(u.Rootpath, 2, len(u.Rootpath) - 2), os.ModePerm)
+	os.MkdirAll(StringSubStr(u.Rootpath, 2, len(u.Rootpath)-2), os.ModePerm)
 	//拷贝到新文件
-	outputfile, err := os.OpenFile(u.Rootpath + outputFileName + "." + fileExt, os.O_WRONLY | os.O_CREATE, 0666)
+	outputfile, err := os.OpenFile(u.Rootpath+outputFileName+"."+fileExt, os.O_WRONLY|os.O_CREATE, 0666)
 	if err != nil {
 		return UploadReturnInfo{
 			Err: err,
@@ -125,10 +125,8 @@ func (u *upload) UploadFile(request *http.Request, name string, md5 bool) Upload
 	}
 	return UploadReturnInfo{
 		Err:      nil,
-		URL:      StringSubStr(u.Rootpath, 1, len(u.Rootpath) - 1) + fmt.Sprintf("%s.%s", outputFileName, fileExt),
+		URL:      StringSubStr(u.Rootpath, 1, len(u.Rootpath)-1) + fmt.Sprintf("%s.%s", outputFileName, fileExt),
 		Filename: outputFileName,
 		Ext:      fileExt,
 	}
 }
-
-

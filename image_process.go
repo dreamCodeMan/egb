@@ -21,11 +21,11 @@ type ImageProcessor struct {
 	//距离左边距离
 	LeftPoint int
 	//距离上边距离
-	TopPoint  int
+	TopPoint int
 	//裁剪后的宽
-	Width     int
+	Width int
 	//剪裁后的高
-	Height    int
+	Height int
 }
 
 //ResizeImage 图片缩放
@@ -105,7 +105,7 @@ func ProcessImage(inputFilePath string, processConfig ImageProcessor) error {
 		outImagePointer, _ = cutter.Crop(img, cutter.Config{
 			Width:  cutImageWidth,
 			Height: cutImageHeight,
-			Anchor: image.Point{X:cutLeftPoint, Y:cutTopPoint},
+			Anchor: image.Point{X: cutLeftPoint, Y: cutTopPoint},
 			Mode:   cutter.TopLeft, // optional, default value
 		})
 	}
@@ -185,10 +185,10 @@ func RotateImage(inputImagePath, outputImagePath string, angle float64) error {
 	if err != nil {
 		return err
 	}
-	newWidth := float64(w) * math.Cos(angle) + float64(h) * math.Sin(angle)
-	newHeight := float64(w) * math.Sin(angle) + float64(h) * math.Cos(angle)
+	newWidth := float64(w)*math.Cos(angle) + float64(h)*math.Sin(angle)
+	newHeight := float64(w)*math.Sin(angle) + float64(h)*math.Cos(angle)
 	dst := image.NewRGBA(image.Rect(0, 0, int(newWidth), int(newHeight)))
-	err = graphics.Rotate(dst, srcImage, &graphics.RotateOptions{Angle:angle})
+	err = graphics.Rotate(dst, srcImage, &graphics.RotateOptions{Angle: angle})
 	if err != nil {
 		return err
 	}
@@ -248,7 +248,7 @@ func ThumbImage(inputFileName string, maxWidth, maxHeight uint, outputFileName s
 			return err
 		}
 		defer outputFile.Close()
-		err = jpeg.Encode(outputFile, newImage, &jpeg.Options{Quality:80})
+		err = jpeg.Encode(outputFile, newImage, &jpeg.Options{Quality: 80})
 		if err != nil {
 			return err
 		}

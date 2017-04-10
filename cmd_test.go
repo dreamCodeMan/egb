@@ -15,3 +15,12 @@ func TestExecCmd(t *testing.T) {
 		t.Errorf("ExecCmd:\n Expect => %s\n Got => %s\n", "usage: go get", stdout)
 	}
 }
+
+func TestExecCmdDir(t *testing.T) {
+	out, errStr, err := ExecCmdDir("/Users/angelina-zf/Playground/golib/src/github.com/agelinazf/egb/concurrent-map", "du", "-sk")
+	if err != nil {
+		t.Error(err.Error())
+		t.Error(errStr)
+	}
+	println(strings.Trim(strings.TrimSpace(out), "."))
+}

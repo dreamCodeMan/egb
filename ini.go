@@ -1,11 +1,11 @@
 package egb
 
 import (
-	"strings"
-	"io"
-	"os"
 	"bufio"
 	"fmt"
+	"io"
+	"os"
+	"strings"
 )
 
 type config struct {
@@ -106,13 +106,13 @@ func (c *config) ReadList() []map[string]map[string]string {
 		}
 		switch {
 		case len(line) == 0:
-		case line[0] == '[' && line[len(line) - 1] == ']':
-			section = strings.TrimSpace(line[1 : len(line) - 1])
+		case line[0] == '[' && line[len(line)-1] == ']':
+			section = strings.TrimSpace(line[1 : len(line)-1])
 			data = make(map[string]map[string]string)
 			data[section] = make(map[string]string)
 		default:
 			i := strings.IndexAny(line, "=")
-			value := strings.TrimSpace(line[i + 1 : len(line)])
+			value := strings.TrimSpace(line[i+1 : len(line)])
 			data[section][strings.TrimSpace(line[0:i])] = value
 			if c.uniquappend(section) == true {
 				c.conflist = append(c.conflist, data)
@@ -140,7 +140,3 @@ func (c *config) uniquappend(conf string) bool {
 	}
 	return true
 }
-
-
-
-

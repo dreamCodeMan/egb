@@ -50,7 +50,3 @@ func Test_RandNumber(t *testing.T) {
 		}
 	}
 }
-
-
-
-

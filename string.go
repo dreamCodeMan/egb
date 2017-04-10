@@ -1,22 +1,22 @@
 package egb
 
 import (
-	"encoding/json"
-	"strings"
 	"bytes"
+	"crypto/aes"
+	"crypto/cipher"
 	"crypto/md5"
-	"fmt"
-	"encoding/hex"
+	"crypto/rand"
 	"crypto/sha1"
 	"crypto/sha256"
-	"strconv"
-	"crypto/aes"
 	"encoding/base64"
-	"io"
-	"crypto/cipher"
-	"crypto/rand"
+	"encoding/hex"
+	"encoding/json"
 	"errors"
+	"fmt"
+	"io"
 	"regexp"
+	"strconv"
+	"strings"
 )
 
 //StringMapFunc execute a function on each element of the slice of string.
@@ -71,7 +71,7 @@ func StringStripHTMLTags(text string) (plainText string) {
 				buf = bytes.NewBufferString(text)
 				buf.Reset()
 			}
-			buf.WriteString(text[tagClose + 1 : i])
+			buf.WriteString(text[tagClose+1 : i])
 			tagStart = i
 			//html标签的结束标志并且start不为-1,说明已经存在开始标签
 		} else if char == '>' && tagStart != -1 {
@@ -82,7 +82,7 @@ func StringStripHTMLTags(text string) (plainText string) {
 	if buf == nil {
 		return text
 	}
-	buf.WriteString(text[tagClose + 1:])
+	buf.WriteString(text[tagClose+1:])
 	str := buf.String()
 	re, _ := regexp.Compile("\\<[\\S\\s]+?\\>")
 	str = re.ReplaceAllStringFunc(str, strings.ToLower)
@@ -103,7 +103,7 @@ func StringReplaceHTMLTags(text, replacement string) (plainText string) {
 				buf = bytes.NewBufferString(text)
 				buf.Reset()
 			}
-			buf.WriteString(text[tagClose + 1 : i])
+			buf.WriteString(text[tagClose+1 : i])
 			tagStart = i
 		} else if char == '>' && tagStart != -1 {
 			buf.WriteString(replacement)
@@ -114,7 +114,7 @@ func StringReplaceHTMLTags(text, replacement string) (plainText string) {
 	if buf == nil {
 		return text
 	}
-	buf.WriteString(text[tagClose + 1:])
+	buf.WriteString(text[tagClose+1:])
 	return buf.String()
 }
 
@@ -253,7 +253,7 @@ func AESEncrypt(key, text []byte) ([]byte, error) {
 		return nil, err
 	}
 	b := base64.StdEncoding.EncodeToString(text)
-	ciphertext := make([]byte, aes.BlockSize + len(b))
+	ciphertext := make([]byte, aes.BlockSize+len(b))
 	iv := ciphertext[:aes.BlockSize]
 	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
 		return nil, err
@@ -282,13 +282,3 @@ func AESDecrypt(key, text []byte) ([]byte, error) {
 	}
 	return data, nil
 }
-
-
-
-
-
-
-
-
-
-

@@ -1,11 +1,11 @@
 package egb
 
 import (
-	"net/http"
-	"strings"
-	"io/ioutil"
 	"io"
+	"io/ioutil"
+	"net/http"
 	"os"
+	"strings"
 )
 
 //封装的http请求
@@ -135,7 +135,3 @@ func Download(urlStr, filename string) (size int64, err error) {
 	size, err = Get(urlStr).Exec().ToFile(filename)
 	return
 }
-
-
-
-
